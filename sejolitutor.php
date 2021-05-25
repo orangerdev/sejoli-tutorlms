@@ -28,114 +28,71 @@
  global $sejolitutor;
 
  // If this file is called directly, abort.
- if ( ! defined( 'WPINC' ) ) {
+ if ( ! defined( 'WPINC' ) ) :
  	die;
- }
-
- add_action('muplugins_loaded', 'sejolitutor_check_sejoli');
+endif;
 
 /**
- * Check if sejoli is activated
- * @since 	1.0.0
- * @return 	void
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
  */
- function sejolitutor_check_sejoli() {
+define( 'SEJOLITUTOR_VERSION',   '1.0.0' );
+define( 'SEJOLITUTOR_DIR',	     plugin_dir_path(__FILE__));
+define( 'SEJOLITUTOR_URL',	     plugin_dir_url(__FILE__));
 
- 	if(!defined('SEJOLISA_VERSION')) :
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-sejolitutor-activator.php
+ */
+function activate_sejolitutor() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-activator.php';
+	Sejolitutor_Activator::activate();
+}
 
- 		add_action('admin_notices', 'sejolp_no_sejoli_functions');
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-sejolitutor-deactivator.php
+ */
+function deactivate_sejolitutor() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-deactivator.php';
+	Sejolitutor_Deactivator::deactivate();
+}
 
- 		function sejolp_no_sejoli_functions() {
- 			?><div class='notice notice-error'>
- 			<p><?php _e('Anda belum menginstall atau mengaktifkan SEJOLI terlebih dahulu.', 'sejolp'); ?></p>
- 			</div><?php
- 		}
+register_activation_hook( __FILE__, 'activate_sejolitutor' );
+register_deactivation_hook( __FILE__, 'deactivate_sejolitutor' );
 
- 		return;
- 	endif;
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'third-parties/autoload.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor.php';
 
- }
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_sejolitutor() {
 
- if(  ! class_exists('Tutor') ) :
+	$plugin = new Sejolitutor();
+	$plugin->run();
 
- 	add_action('admin_notices', 'sejolitutor_no_tutorlms_functions');
+}
 
-	/**
-	 * Check if tutor LMS is not activated
-	 * @since 	1.0.0
-	 * @return 	void
-	 */
- 	function sejolitutor_no_tutorlms_functions() {
- 		?><div class='notice notice-error'>
- 		<p><?php _e('Anda belum menginstall atau mengaktifkan Tutor LMS terlebih dahulu.', 'sejolp'); ?></p>
- 		</div><?php
- 	}
+require_once(SEJOLITUTOR_DIR . 'third-parties/yahnis-elsts/plugin-update-checker/plugin-update-checker.php');
 
- else :
+$update_checker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/orangerdev/sejoli-tutorlms',
+	__FILE__,
+	'sejoli-tutorlms'
+);
 
-	/**
-	 * Currently plugin version.
-	 * Start at version 1.0.0 and use SemVer - https://semver.org
-	 * Rename this for your plugin and update it as you release new versions.
-	 */
-	define( 'SEJOLITUTOR_VERSION',   '1.0.0' );
-    define( 'SEJOLITUTOR_DIR',	     plugin_dir_path(__FILE__));
-    define( 'SEJOLITUTOR_URL',	     plugin_dir_url(__FILE__));
+$update_checker->setBranch('master');
 
-	/**
-	 * The code that runs during plugin activation.
-	 * This action is documented in includes/class-sejolitutor-activator.php
-	 */
-	function activate_sejolitutor() {
-		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-activator.php';
-		Sejolitutor_Activator::activate();
-	}
-
-	/**
-	 * The code that runs during plugin deactivation.
-	 * This action is documented in includes/class-sejolitutor-deactivator.php
-	 */
-	function deactivate_sejolitutor() {
-		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-deactivator.php';
-		Sejolitutor_Deactivator::deactivate();
-	}
-
-	register_activation_hook( __FILE__, 'activate_sejolitutor' );
-	register_deactivation_hook( __FILE__, 'deactivate_sejolitutor' );
-
-	/**
-	 * The core plugin class that is used to define internationalization,
-	 * admin-specific hooks, and public-facing site hooks.
-	 */
-	require plugin_dir_path( __FILE__ ) . 'third-parties/autoload.php';
-	require plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor.php';
-
-	/**
-	 * Begins execution of the plugin.
-	 *
-	 * Since everything within the plugin is registered via hooks,
-	 * then kicking off the plugin from this point in the file does
-	 * not affect the page life cycle.
-	 *
-	 * @since    1.0.0
-	 */
-	function run_sejolitutor() {
-
-		$plugin = new Sejolitutor();
-		$plugin->run();
-
-	}
-
-    require_once(SEJOLITUTOR_DIR . 'third-parties/yahnis-elsts/plugin-update-checker/plugin-update-checker.php');
-
-	$update_checker = Puc_v4_Factory::buildUpdateChecker(
-		'https://github.com/orangerdev/sejoli-tutorlms',
-		__FILE__,
-		'sejoli-tutorlms'
-	);
-
-	$update_checker->setBranch('master');
-
-	run_sejolitutor();
-
-endif;
+run_sejolitutor();

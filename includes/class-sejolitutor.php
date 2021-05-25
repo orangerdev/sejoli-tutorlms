@@ -154,6 +154,10 @@ class Sejolitutor {
 
 		$admin = new SejoliTutor\Admin( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'plugins_loaded',	$admin, 'check_needed_plugins', 999);
+		$this->loader->add_action( 'admin_notices',		$admin, 'display_notice_if_sejoli_not_activated',   10);
+		$this->loader->add_action( 'admin_notices',		$admin, 'display_notice_if_tutorlms_not_activated', 10);
+
 	}
 
 	/**
