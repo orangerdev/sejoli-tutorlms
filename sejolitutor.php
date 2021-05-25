@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://ridwan-arifandi.com
+ * @since             1.0.0
+ * @package           Sejolitutor
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Sejoli - Tutor LMS
+ * Plugin URI:        https://sejoli.co.id
+ * Description:       Integrates SEJOLI premium membership WordPress plugin with Tutor LMS ( an LMS WordPress plugin )
+ * Version:           1.0.0
+ * Author:            Ridwan Arifandi
+ * Author URI:        https://ridwan-arifandi.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       sejolitutor
+ * Domain Path:       /languages
+ */
+
+ global $sejolitutor;
+
+ // If this file is called directly, abort.
+ if ( ! defined( 'WPINC' ) ) {
+ 	die;
+ }
+
+ add_action('muplugins_loaded', 'sejolitutor_check_sejoli');
+
+/**
+ * Check if sejoli is activated
+ * @since 	1.0.0
+ * @return 	void
+ */
+ function sejolitutor_check_sejoli() {
+
+ 	if(!defined('SEJOLISA_VERSION')) :
+
+ 		add_action('admin_notices', 'sejolp_no_sejoli_functions');
+
+ 		function sejolp_no_sejoli_functions() {
+ 			?><div class='notice notice-error'>
+ 			<p><?php _e('Anda belum menginstall atau mengaktifkan SEJOLI terlebih dahulu.', 'sejolp'); ?></p>
+ 			</div><?php
+ 		}
+
+ 		return;
+ 	endif;
+
+ }
+
+ if(  ! class_exists('Tutor') ) :
+
+ 	add_action('admin_notices', 'sejolitutor_no_tutorlms_functions');
+
+	/**
+	 * Check if tutor LMS is not activated
+	 * @since 	1.0.0
+	 * @return 	void
+	 */
+ 	function sejolitutor_no_tutorlms_functions() {
+ 		?><div class='notice notice-error'>
+ 		<p><?php _e('Anda belum menginstall atau mengaktifkan Tutor LMS terlebih dahulu.', 'sejolp'); ?></p>
+ 		</div><?php
+ 	}
+
+ else :
+
+	/**
+	 * Currently plugin version.
+	 * Start at version 1.0.0 and use SemVer - https://semver.org
+	 * Rename this for your plugin and update it as you release new versions.
+	 */
+	define( 'SEJOLITUTOR_VERSION',   '1.0.0' );
+    define( 'SEJOLITUTOR_DIR',	     plugin_dir_path(__FILE__));
+    define( 'SEJOLITUTOR_URL',	     plugin_dir_url(__FILE__));
+
+	/**
+	 * The code that runs during plugin activation.
+	 * This action is documented in includes/class-sejolitutor-activator.php
+	 */
+	function activate_sejolitutor() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-activator.php';
+		Sejolitutor_Activator::activate();
+	}
+
+	/**
+	 * The code that runs during plugin deactivation.
+	 * This action is documented in includes/class-sejolitutor-deactivator.php
+	 */
+	function deactivate_sejolitutor() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor-deactivator.php';
+		Sejolitutor_Deactivator::deactivate();
+	}
+
+	register_activation_hook( __FILE__, 'activate_sejolitutor' );
+	register_deactivation_hook( __FILE__, 'deactivate_sejolitutor' );
+
+	/**
+	 * The core plugin class that is used to define internationalization,
+	 * admin-specific hooks, and public-facing site hooks.
+	 */
+	require plugin_dir_path( __FILE__ ) . 'third-parties/autoload.php';
+	require plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor.php';
+
+	/**
+	 * Begins execution of the plugin.
+	 *
+	 * Since everything within the plugin is registered via hooks,
+	 * then kicking off the plugin from this point in the file does
+	 * not affect the page life cycle.
+	 *
+	 * @since    1.0.0
+	 */
+	function run_sejolitutor() {
+
+		$plugin = new Sejolitutor();
+		$plugin->run();
+
+	}
+
+    require_once(SEJOLITUTOR_DIR . 'third-parties/yahnis-elsts/plugin-update-checker/plugin-update-checker.php');
+
+	$update_checker = Puc_v4_Factory::buildUpdateChecker(
+		'https://github.com/orangerdev/sejoli-tutorlms',
+		__FILE__,
+		'sejoli-tutorlms'
+	);
+
+	$update_checker->setBranch('master');
+
+	run_sejolitutor();
+
+endif;
