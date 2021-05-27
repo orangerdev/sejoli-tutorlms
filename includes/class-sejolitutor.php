@@ -115,6 +115,7 @@ class Sejolitutor {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejolitutor-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejolitutor-product.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -157,6 +158,11 @@ class Sejolitutor {
 		$this->loader->add_action( 'plugins_loaded',	$admin, 'check_needed_plugins', 999);
 		$this->loader->add_action( 'admin_notices',		$admin, 'display_notice_if_sejoli_not_activated',   10);
 		$this->loader->add_action( 'admin_notices',		$admin, 'display_notice_if_tutorlms_not_activated', 10);
+
+		$product = new SejoliTutor\Admin\Product( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'sejoli/product/fields', 	$product, 'set_product_fields', 11);
+		$this->loader->add_filter( 'sejoli/product/meta-data',	$product, 'set_product_metadata', 100, 2);
 
 	}
 
