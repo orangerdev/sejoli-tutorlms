@@ -122,6 +122,12 @@ class Sejolitutor {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sejolitutor-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sejolitutor-course.php';
+
+		/**
+		 * Routine functions
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'functions/course.php';
 
 		$this->loader = new Sejolitutor_Loader();
 
@@ -175,7 +181,10 @@ class Sejolitutor {
 	 */
 	private function define_public_hooks() {
 
-		$public = new SejoliTutor\Front( $this->get_plugin_name(), $this->get_version() );
+		$course = new SejoliTutor\Front\Course( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'is_course_purchasable', $course, 'check_if_course_is_purchasable', 999, 2);
+		$this->loader->add_filter( 'tutor_course_sell_by', 	$course, 'check_course_sell_by', 	   	   999);
 
 	}
 
