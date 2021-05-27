@@ -7,26 +7,37 @@
  * @return  array|false     Will return false if there is no product for given course id or no related product
  */
 function sejolitutor_get_products($check_course_id = 0) {
-    global $wpdb;
 
-    $data    = array();
-    $results = $wpdb->get_results(
-                "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course|||_|id'"
-               );
+    global $wpdb, $sejolitutor;
 
-    foreach((array) $results as $row) :
+    if( !is_array($sejolitutor['course'])) :
 
-        $product_id = (int) $row->post_id;
-        $course_id  = (int) $row->meta_value;
-        $product    = get_post( $product_id );
+        $data    = array();
+        $results = $wpdb->get_results(
+                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course|||_|id'"
+                   );
 
-        if(!isset($data[$course_id]) && 'publish' === $product->post_status) :
-            $data[$course_id] = array();
-        endif;
+        foreach((array) $results as $row) :
 
-        $data[$course_id][] = $product_id;
+            $product_id = (int) $row->post_id;
+            $course_id  = (int) $row->meta_value;
+            $product    = get_post( $product_id );
 
-    endforeach;
+            if(!isset($data[$course_id]) && 'publish' === $product->post_status) :
+                $data[$course_id] = array();
+            endif;
+
+            $data[$course_id][] = $product_id;
+
+        endforeach;
+
+        $sejolitutor['course'] = $data;
+
+    else :
+
+        $data = $sejolitutor['course'];
+
+    endif;
 
     // check if there is related product to giver course ID
     if(0 < $check_course_id) :

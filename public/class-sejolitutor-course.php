@@ -82,13 +82,22 @@ class Course {
      * @param   string     $sell_by
      * @return  string
      */
-    public function check_course_sell_by( string $sell_by ) {
+    public function check_course_sell_by( $sell_by ) {
 
         if($this->is_purchasable) :
             return 'sejoli';
         endif;
 
         return $sell_by;
+    }
+
+    public function set_template_path( $template_location, $template ) {
+
+        if( 'single/course/add-to-cart-sejoli' === $template ) :
+            return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
+        endif;
+
+        return $template_location;
     }
 
 }

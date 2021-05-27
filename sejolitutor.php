@@ -27,6 +27,10 @@
 
  global $sejolitutor;
 
+ $sejolitutor = array(
+     'course'   => null
+ );
+
  // If this file is called directly, abort.
  if ( ! defined( 'WPINC' ) ) :
  	die;
@@ -69,6 +73,22 @@ register_deactivation_hook( __FILE__, 'deactivate_sejolitutor' );
  */
 require plugin_dir_path( __FILE__ ) . 'third-parties/autoload.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-sejolitutor.php';
+
+/**
+ * Create tutor_pro function
+ * @since   1.0.0
+ */
+if( !function_exists('tutor_pro') ) :
+
+    function tutor_pro() {
+
+        $info = array(
+            'path' => SEJOLITUTOR_DIR
+        );
+
+        return (object) $info;
+    }
+endif;
 
 /**
  * Begins execution of the plugin.

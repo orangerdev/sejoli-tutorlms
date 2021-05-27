@@ -185,6 +185,7 @@ class Sejolitutor {
 
 		$this->loader->add_filter( 'is_course_purchasable', $course, 'check_if_course_is_purchasable', 999, 2);
 		$this->loader->add_filter( 'tutor_course_sell_by', 	$course, 'check_course_sell_by', 	   	   999);
+		$this->loader->add_filter( 'tutor_get_template_path',	$course, 'set_template_path', 		   999, 2);
 
 	}
 
