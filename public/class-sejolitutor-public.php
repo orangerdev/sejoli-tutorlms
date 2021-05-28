@@ -56,4 +56,18 @@ class Front {
 
 	}
 
+	/**
+	 * Enqueue needed CSS and JS files
+	 * @uses 	wp_enqueue_scripts, action, 194
+	 * @since 	1.0.0
+	 * @return 	void
+	 */
+	public function enqueue_scripts() {
+
+		if(is_singular(TLMS_COURSE_CPT)) :
+			wp_enqueue_style( 'sejoli-tutor', SEJOLITUTOR_URL . 'public/css/sejolitutor-public.css', $this->version, 'all');
+		endif;
+
+	}
+
 }

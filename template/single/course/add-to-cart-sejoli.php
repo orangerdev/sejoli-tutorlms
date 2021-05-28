@@ -4,7 +4,7 @@
     $products = sejolitutor_get_products($post->ID);
 ?>
 <div class="sejoli-product-related product-list">
-    <h4 class='title'><?php _e('Kelas ini tersedia pada produk :', 'sejoli'); ?></h4>
+    <h4 class='tutor-segment-title'><?php _e('Kelas ini tersedia pada produk :', 'sejoli'); ?></h4>
     <ul>
     <?php
     foreach($products as $product_id) :

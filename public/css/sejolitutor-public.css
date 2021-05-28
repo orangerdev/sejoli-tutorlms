@@ -2,3 +2,7 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.tutor-single-add-to-cart-box  .tutor-notice-warning {
+    display: none;
+}
