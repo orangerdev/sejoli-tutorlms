@@ -115,6 +115,7 @@ class Sejolitutor {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejolitutor-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejolitutor-order.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejolitutor-product.php';
 
 		/**
@@ -169,6 +170,16 @@ class Sejolitutor {
 
 		$this->loader->add_filter( 'sejoli/product/fields', 	$product, 'set_product_fields', 11);
 		$this->loader->add_filter( 'sejoli/product/meta-data',	$product, 'set_product_metadata', 100, 2);
+
+		$order 	= new SejoliTutor\Admin\Order( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'sejoli/order/meta-data', 					$order, 'set_order_metadata', 		100, 2);
+		$this->loader->add_filter( 'sejoli/order/set-status/completed',			$order, 'create_tutorlms_order',  	200);
+		$this->loader->add_filter( 'sejoli/order/set-status/on-hold',			$order, 'cancel_tutorlms_order',  	200);
+		$this->loader->add_filter( 'sejoli/order/set-status/cancelled',			$order, 'cancel_tutorlms_order',	200);
+		$this->loader->add_filter( 'sejoli/order/set-status/refunded',			$order, 'cancel_tutorlms_order',	200);
+		$this->loader->add_filter( 'sejoli/order/set-status/in-progress',		$order, 'cancel_tutorlms_order',	200);
+		$this->loader->add_filter( 'sejoli/order/set-status/shipped',			$order, 'cancel_tutorlms_order',	200);
 
 	}
 

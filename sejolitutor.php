@@ -41,10 +41,11 @@ endif;
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SEJOLITUTOR_VERSION',   '1.0.0' );
-define( 'SEJOLITUTOR_DIR',	     plugin_dir_path(__FILE__));
-define( 'SEJOLITUTOR_URL',	     plugin_dir_url(__FILE__));
-define( 'TLMS_COURSE_CPT',       'courses');
+define( 'SEJOLITUTOR_VERSION',      '1.0.0' );
+define( 'SEJOLITUTOR_DIR',	        plugin_dir_path(__FILE__));
+define( 'SEJOLITUTOR_URL',	        plugin_dir_url(__FILE__));
+define( 'TLMS_COURSE_CPT',          'courses');
+define( 'TLMS_COURSE_ENROLLED_CPT', 'tutor_enrolled');
 
 /**
  * The code that runs during plugin activation.

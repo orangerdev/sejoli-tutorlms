@@ -51,3 +51,35 @@ function sejolitutor_get_products($check_course_id = 0) {
 
     return $data;
 }
+
+/**
+ * Get enrolled course by course_id and user_id
+ * @since   1.0.0
+ * @param   integer         $course_id
+ * @param   integer         $user_id
+ * @param   integer         $order_id   (optional)
+ * @return  integer|false   return with tutor_enrolled post ID
+ */
+function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, $order_id = 0 ) {
+
+    if( empty($course_id) || empty($user_id) ) :
+        return false;
+    endif;
+
+    $posts = new \WP_Query(array(
+        'post_type'              => TLMS_COURSE_ENROLLED_CPT,
+        'post_parent'            => $course_id,
+        'author'                 => $user_id,
+        'posts_per_page'         => 1,
+        'fields'                 => 'ids',
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false
+    ));
+
+    if( 0 < count($posts->posts) ) :
+        return $posts->posts[0];
+    endif;
+
+    return false;
+}
