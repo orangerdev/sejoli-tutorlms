@@ -70,6 +70,7 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
         'post_type'              => TLMS_COURSE_ENROLLED_CPT,
         'post_parent'            => $course_id,
         'author'                 => $user_id,
+        'post_status'            => array('publish', 'completed'),
         'posts_per_page'         => 1,
         'fields'                 => 'ids',
         'no_found_rows'          => true,
@@ -79,6 +80,59 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
 
     if( 0 < count($posts->posts) ) :
         return $posts->posts[0];
+    endif;
+
+    return false;
+}
+
+/**
+ * Get all enrolled course by user_id
+ * @since   1.0.0
+ * @param   integer         $user_id
+ * @param   integer         $order_id   (optional)
+ * @return  integer|false   return with tutor_enrolled post ID
+ */
+function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
+
+    if( empty($user_id) ) :
+        $user_id = get_current_user_id()
+    endif;
+
+    $posts = new \WP_Query(array(
+
+        'post_type'              => TLMS_COURSE_ENROLLED_CPT,
+        'post_status'            => array('publish', 'completed'),
+        'author'                 => $user_id,
+        'fields'                 => 'ids',
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false
+    ));
+
+    if( 0 < count($posts->posts) ) :
+        return $posts->posts;
+    endif;
+
+    return false;
+}
+
+/**
+ * Get all available course
+ * @since   1.0.0
+ * @return  array|false
+ */
+function sejolitutor_get_available_courses() {
+
+    $query = new \WP_Query(array(
+        'post_type'              => TLMS_COURSE_CPT,
+        'posts_per_page'         => 100,
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false
+    ));
+
+    if( isset($query->posts) && 0 < count($query->posts)) :
+        return $query->posts;
     endif;
 
     return false;
