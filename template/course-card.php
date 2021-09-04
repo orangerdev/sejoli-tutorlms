@@ -1,23 +1,15 @@
-?>
 <div class="column">
     <div class="ui fluid card">
         <div class="image">
-            <?php echo $course->get_image(); ?>
+            <?php echo get_the_post_thumbnail( $course->ID, 'full', array( 'class' => 'thumbnail' ) ); ?>
         </div>
         <div class="content">
             <span class='left floated'>
                 <a href='#' class='section'>
-                    <i class='book icon'></i>
+                    <i class='bookmark icon'></i>
                     <?php
-                    printf(
-                        _n(
-                            '%s bagian',
-                            '%s bagian',
-                            $number_sections,
-                            'sejolilp'
-                        ),
-                        $number_sections
-                    );
+                        $course_level = get_post_meta($course->ID, '_tutor_course_level', true);
+                        echo tutor_utils()->course_levels($course_level);
                     ?>
                 </a>
             </span>
@@ -29,19 +21,19 @@
                         _n(
                             '%s ',
                             '%s materi',
-                            $course->count_items(LP_LESSON_CPT),
-                            'sejolilp'
+                            tutor_utils()->get_lesson_count_by_course($course->ID),
+                            'sejolitutor'
                         ),
-                        $course->count_items(LP_LESSON_CPT)
+                        tutor_utils()->get_lesson_count_by_course($course->ID)
                     );
                     ?>
                 </a>
             </span>
         </div>
         <div class="content">
-            <h3 class='header'><?php echo $course->post_title(); ?></h3>
+            <h3 class='header'><?php echo $course->post_title; ?></h3>
             <div class="description">
-                <?php echo $course->get_content(''); ?>
+                <?php echo $course->post_excerpt; ?>
             </div>
         </div>
         <div class="extra content">
@@ -52,16 +44,16 @@
                     _n(
                         '%s peserta',
                         '%s peserta',
-                        $course->get_users_enrolled(),
-                        'sejolilp'
+                        tutor_utils()->count_enrolled_users_by_course($course->ID),
+                        'sejolitutor'
                     ),
-                    $course->get_users_enrolled()
+                    tutor_utils()->count_enrolled_users_by_course($course->ID)
                 );
                 ?>
             </a>
         </div>
-        <a href='<?php echo $course->get_permalink(); ?>' class="ui bottom attached button">
-            <?php _e('Lihat Kelas', 'sejoli'); ?>
+        <a href='<?php echo get_permalink($course->ID); ?>' class="ui bottom attached button">
+            <?php _e('Lihat Kelas', 'sejolitutor'); ?>
         </a>
     </div>
-</div><?php
+</div>
