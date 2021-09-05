@@ -124,16 +124,18 @@ class Order {
             !isset($order_data['meta_data']['tutorlms_order'])
         ) :
 
-            $user_id = $this->buyer_id = $order_data['user_id'];
-            $courses = $order_data['meta_data']['tutorlms'];
+            $user_id  = $this->buyer_id = $order_data['user_id'];
+            $order_id = $order_data['ID'];
+            $courses  = $order_data['meta_data']['tutorlms'];
 
 			$order_data['meta_data']['tutorlms_order'] = array();
 
             foreach( (array) $courses as $course_id) :
 
-				tutor_utils()->do_enroll($course_id, 0, $user_id);
+				tutor_utils()->do_enroll($course_id, $order_id, $user_id);
 
-				$enrolled_id =  sejolitutor_get_enrolled_course_by_user( $course_id, $user_id);
+				$enrolled_ids = tutor_utils()->get_course_enrolled_ids_by_order_id($order_data['ID']);
+				$enrolled_id  =  $enrolled_ids[0]['enrolled_id'];
 
 				$this->update_enroll_complete(
 					$course_id,
@@ -162,9 +164,15 @@ class Order {
 		// Enrolled has been set, so we need to reset again
 		elseif(isset($order_data['meta_data']['tutorlms_order'])) :
 
-			$user_id = $this->buyer_id = $order_data['user_id'];
+			$user_id  = $this->buyer_id = $order_data['user_id'];
+			$order_id = $order_data['ID'];
 
 			foreach($order_data['meta_data']['tutorlms_order'] as $course_id => $enrolled_id) :
+
+				tutor_utils()->do_enroll($course_id, $order_id, $user_id);
+
+				$enrolled_ids = tutor_utils()->get_course_enrolled_ids_by_order_id($order_data['ID']);
+				$enrolled_id  =  $enrolled_ids[0]['enrolled_id'];
 
 				$this->update_enroll_complete(
 					$course_id,

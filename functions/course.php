@@ -50,6 +50,7 @@ function sejolitutor_get_products($check_course_id = 0) {
     endif;
 
     return $data;
+    
 }
 
 /**
@@ -61,7 +62,7 @@ function sejolitutor_get_products($check_course_id = 0) {
  * @return  integer|false   return with tutor_enrolled post ID
  */
 function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, $order_id = 0 ) {
-
+        
     if( empty($course_id) || empty($user_id) ) :
         return false;
     endif;
@@ -83,6 +84,7 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
     endif;
 
     return false;
+
 }
 
 /**
@@ -111,6 +113,7 @@ function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
     endif;
 
     return false;
+
 }
 
 /**
@@ -133,4 +136,5 @@ function sejolitutor_get_available_courses() {
     endif;
 
     return false;
+
 }
