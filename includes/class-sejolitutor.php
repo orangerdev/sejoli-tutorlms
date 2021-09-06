@@ -196,6 +196,8 @@ class Sejolitutor {
 		$public = new SejoliTutor\Front( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts',		$public, 'enqueue_scripts', 194);
+		$this->loader->add_filter( 'sejoli/enable',			$public, 	'enable_semantic', 1000);
+		$this->loader->add_filter( 'template_include',		$public, 	'view_member_template',	1000);
 
 		$course = new SejoliTutor\Front\Course( $this->get_plugin_name(), $this->get_version() );
 
