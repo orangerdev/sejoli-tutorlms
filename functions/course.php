@@ -50,6 +50,7 @@ function sejolitutor_get_products($check_course_id = 0) {
     endif;
 
     return $data;
+    
 }
 
 /**
@@ -61,7 +62,7 @@ function sejolitutor_get_products($check_course_id = 0) {
  * @return  integer|false   return with tutor_enrolled post ID
  */
 function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, $order_id = 0 ) {
-
+        
     if( empty($course_id) || empty($user_id) ) :
         return false;
     endif;
@@ -83,6 +84,7 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
     endif;
 
     return false;
+
 }
 
 /**
@@ -95,18 +97,15 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
 function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
 
     if( empty($user_id) ) :
-        $user_id = get_current_user_id()
+        $user_id = get_current_user_id();
     endif;
 
+    $course_ids = tutor_utils()->get_enrolled_courses_ids_by_user( $user_id );
     $posts = new \WP_Query(array(
-
-        'post_type'              => TLMS_COURSE_ENROLLED_CPT,
-        'post_status'            => array('publish', 'completed'),
-        'author'                 => $user_id,
-        'fields'                 => 'ids',
-        'no_found_rows'          => true,
-        'update_post_meta_cache' => false,
-        'update_post_term_cache' => false
+        'post_type'      => TLMS_COURSE_CPT,
+        'post_status'    => array('publish', 'completed'),
+        'post__in'       => $course_ids,
+        'posts_per_page' => -1
     ));
 
     if( 0 < count($posts->posts) ) :
@@ -114,6 +113,7 @@ function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
     endif;
 
     return false;
+
 }
 
 /**
@@ -136,4 +136,5 @@ function sejolitutor_get_available_courses() {
     endif;
 
     return false;
+
 }
