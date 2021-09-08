@@ -6,3 +6,23 @@
 .tutor-single-add-to-cart-box  .tutor-notice-warning {
     display: none;
 }
+
+.sejoli-product-related.product-list ul {
+	padding: 0;
+	list-style: none;
+}
+
+.sejoli-product-related.product-list ul li {
+    position: relative;
+    margin-bottom: 5px;
+    line-height: 30px;
+    padding-left: 25px;
+}
+
+.sejoli-product-related.product-list ul li:before {
+    content: '\e90f';
+    position: absolute;
+    left: 0;
+    font-family: 'tutor';
+    color: var(--tutor-primary-color);
+}

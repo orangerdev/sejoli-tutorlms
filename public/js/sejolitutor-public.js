@@ -30,13 +30,13 @@
 	 */
 	$(document).ready(function(){
 
-		$(".tutor-single-add-to-cart-box").remove();
+		$(".tutor-course-purchase-btn").remove();
 	
 	});
 
 	$( window ).load(function() {
 
-		$(".tutor-single-add-to-cart-box").remove();
+		$(".tutor-course-purchase-btn").remove();
 	
 	});
 
