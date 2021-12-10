@@ -14,7 +14,7 @@ function sejolitutor_get_products($check_course_id = 0) {
 
         $data    = array();
         $results = $wpdb->get_results(
-                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course|||_|id'"
+                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course_id'"
                    );
 
         foreach((array) $results as $row) :
