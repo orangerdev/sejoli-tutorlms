@@ -14,7 +14,7 @@ function sejolitutor_get_products($check_course_id = 0) {
 
         $data    = array();
         $results = $wpdb->get_results(
-                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course_id'"
+                    "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key LIKE '_tutorlms_course|||_|id'"
                    );
 
         foreach((array) $results as $row) :
@@ -62,17 +62,18 @@ function sejolitutor_get_products($check_course_id = 0) {
  * @return  integer|false   return with tutor_enrolled post ID
  */
 function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, $order_id = 0 ) {
-        
-    if( empty($course_id) || empty($user_id) ) :
-        return false;
+
+    if( empty($user_id) ) :
+        $user_id = get_current_user_id();
     endif;
 
+    $course_ids = tutor_utils()->get_enrolled_courses_ids_by_user( $user_id );
     $posts = new \WP_Query(array(
         'post_type'              => TLMS_COURSE_ENROLLED_CPT,
-        'post_parent'            => $course_id,
-        'author'                 => $user_id,
+        'post__in'               => $course_id,
+        'post_author'            => $user_id,
         'post_status'            => array('publish', 'completed'),
-        'posts_per_page'         => 1,
+        'posts_per_page'         => 300,
         'fields'                 => 'ids',
         'no_found_rows'          => true,
         'update_post_meta_cache' => false,
@@ -80,7 +81,7 @@ function sejolitutor_get_enrolled_course_by_user( $course_id = 0, $user_id = 0, 
     ));
 
     if( 0 < count($posts->posts) ) :
-        return $posts->posts[0];
+        return $posts->posts;
     endif;
 
     return false;
@@ -102,10 +103,14 @@ function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
 
     $course_ids = tutor_utils()->get_enrolled_courses_ids_by_user( $user_id );
     $posts = new \WP_Query(array(
-        'post_type'      => TLMS_COURSE_CPT,
-        'post_status'    => array('publish', 'completed'),
-        'post__in'       => $course_ids,
-        'posts_per_page' => -1
+        'post_type'              => TLMS_COURSE_CPT,
+        'post_author'            => $user_id,
+        'post_status'            => array('publish', 'completed'),
+        'post__in'               => $course_ids,
+        'posts_per_page'         => 300,
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false
     ));
 
     if( 0 < count($posts->posts) ) :
@@ -125,7 +130,7 @@ function sejolitutor_get_available_courses() {
 
     $query = new \WP_Query(array(
         'post_type'              => TLMS_COURSE_CPT,
-        'posts_per_page'         => 100,
+        'posts_per_page'         => 300,
         'no_found_rows'          => true,
         'update_post_meta_cache' => false,
         'update_post_term_cache' => false

@@ -2,7 +2,6 @@
 <h2 class="ui header"><?php _e('Semua Kelas', 'sejolitutor'); ?></h2>
 <?php
 	$course_ids   = sejolitutor_get_available_courses();
-	$user_courses = sejolitutor_get_all_enrolled_courses_by_user();
 ?>
 <div class="ui three column doubling stackable cards item-holder masonry grid">
 <?php
@@ -12,7 +11,13 @@ foreach( (array) $course_ids as $course_id ) :
     
     setup_postdata($course);
 
-    include( plugin_dir_path( __FILE__ ) . 'course-card.php' );
+     if(!empty($course)) {
+    	include( plugin_dir_path( __FILE__ ) . 'course-card.php' );
+    } else {
+    	echo '<div class="column">';
+    	echo esc_attr__('You Have No Course!', 'sejoli-tutorlms');
+    	echo '</div>';
+    }
 
 endforeach;
 ?>
