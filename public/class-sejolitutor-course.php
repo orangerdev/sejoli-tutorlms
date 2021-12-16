@@ -98,6 +98,7 @@ class Course {
         endif;
 
         return $template_location;
+
     }
 
 }

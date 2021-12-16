@@ -206,7 +206,7 @@ class Sejolitutor {
 		$this->loader->add_filter( 'tutor_course_sell_by', 		$course, 'check_course_sell_by', 	   	   999);
 		$this->loader->add_filter( 'tutor_get_template_path',	$course, 'set_template_path', 		   	   999, 2);
 
-		$member 	= new SejoliTutor\Front\Member( $this->get_plugin_name(), $this->get_version() );
+		$member = new SejoliTutor\Front\Member( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_filter( 'sejoli/member-area/menu',			$member, 'add_course_menu', 999);
 		$this->loader->add_filter( 'sejoli/member-area/menu-url',		$member, 'modify_member_area_url',	1, 2);
