@@ -2,9 +2,9 @@
 Contributors: (this should be a list of wordpress.org userid's)
 Donate link: https://ridwan-arifandi.com
 Tags: tutor, lms, membership
-Requires at least: 5.3
-Tested up to: 5.7.2
-Stable tag: 1.0.0
+Requires at least: 5.8.0
+Tested up to: 5.8.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,11 @@ Coming soon
 Coming soon
 
 == Changelog ==
+
+= 1.0.1
+* Fix error course page
+* Fix error menu addons tutor pro
+* Fix bug CTA link, in my class page
 
 = 1.0.0 =
 * First release
