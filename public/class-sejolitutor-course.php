@@ -93,7 +93,7 @@ class Course {
 
     public function set_template_path( $template_location, $template ) {
 
-        if( 'single/course/add-to-cart-sejoli' === $template ) :
+        if( 'single\course\add-to-cart-sejoli' === $template ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 
