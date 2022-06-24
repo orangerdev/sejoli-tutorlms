@@ -92,13 +92,12 @@ class Course {
     }
 
     public function set_template_path( $template_location, $template ) {
-        // error_log(print_r($template, true));
-        // error_log(print_r($template_location, true));
-        if( 'single\course\add-to-cart-sejoli' === $template ) :
+        
+        if( 'single\course\add-to-cart-sejoli' === str_replace("/", "\\", $template) ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 
-        if( 'single\course\course-entry-box' === $template ) :
+        if( 'single\course\course-entry-box' === str_replace("/", "\\", $template)  ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 

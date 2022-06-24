@@ -193,14 +193,12 @@
 			} else {
 				ob_start();
 
-					global $post;
+				$products = sejolitutor_get_products(get_the_ID());
 
-					    $products = sejolitutor_get_products($post->ID);
-				?>
-		            <?php
-				    foreach($products as $product_id) :
-				        $get_product = sejolisa_get_product($product_id);
-				    ?>
+				if($products) :
+
+			        $get_product = sejolisa_get_product($products);
+		?>
 					<div class="tutor-course-sidebar-card-pricing tutor-d-flex tutor-align-end tutor-justify-between">
 			            <div>
 			                <span class="tutor-fs-4 tutor-fw-bold tutor-color-black">
@@ -208,13 +206,36 @@
 			                </span>
 			            </div>
 			        </div>
-		            <a href='<?php echo get_permalink($product_id); ?>' target="new" class="tutor-btn tutor-btn-icon tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-add-to-cart-button">
+		            <a href="<?php echo get_permalink($products); ?>" target="new" class="tutor-btn tutor-btn-icon tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-add-to-cart-button">
 		                <span class="btn-icon tutor-icon-cart-filled"></span>
 		                <span><?php echo __('Buy This Course', 'sejoli'); ?></span>
 		            </a>
-		            <?php endforeach; ?>
-				<?php
-			}
+	    <?php 
+	        	else:
+	    ?>
+	    		<div class="tutor-course-single-pricing">
+					<span class="tutor-fs-4 tutor-fw-bold tutor-color-black">
+						<?php esc_html_e( 'Free', 'sejoli' ); ?>
+					</span>
+				</div>
+
+				<div class="tutor-course-single-btn-group <?php echo is_user_logged_in() ? '' : 'tutor-course-entry-box-login'; ?>" data-login_url="<?php echo $login_url; ?>">
+					<form class="tutor-enrol-course-form" method="post">
+						<?php wp_nonce_field( tutor()->nonce_action, tutor()->nonce ); ?>
+						<input type="hidden" name="tutor_course_id" value="<?php echo esc_attr( get_the_ID() ); ?>">
+						<input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+						<button type="submit" class="tutor-btn tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-enroll-course-button tutor-static-loader">
+							<?php esc_html_e( 'Enroll now', 'sejoli' ); ?>
+						</button>
+					</form>
+				</div>
+
+				<div class="tutor-fs-7 tutor-color-muted tutor-mt-20 tutor-text-center">
+					<?php esc_html_e( 'Free access this course', 'sejoli' ); ?>
+				</div>
+	    <?php
+	        	endif;
+			}	
 		}
 
 		do_action('tutor_course/single/entry/after', get_the_ID());

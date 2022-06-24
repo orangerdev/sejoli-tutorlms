@@ -24,10 +24,8 @@ function sejolitutor_get_products($check_course_id = 0) {
             $product    = get_post( $product_id );
 
             if(!isset($data[$course_id]) && 'publish' === $product->post_status) :
-                $data[$course_id] = array();
+                $data[$course_id] = $product_id;
             endif;
-
-            $data[$course_id][] = $product_id;
 
         endforeach;
 
