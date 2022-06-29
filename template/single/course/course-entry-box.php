@@ -224,14 +224,14 @@
 			        </div>
 		            <a href="<?php echo get_permalink($products); ?>" target="new" class="tutor-btn tutor-btn-icon tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-add-to-cart-button">
 		                <span class="btn-icon tutor-icon-cart-filled"></span>
-		                <span><?php echo __('Buy This Course', 'sejoli'); ?></span>
+		                <span><?php echo __('Buy This Course', 'sejolitutor'); ?></span>
 		            </a>
 	    <?php 
 	        	else:
 	    ?>
 	    		<div class="tutor-course-single-pricing">
 					<span class="tutor-fs-4 tutor-fw-bold tutor-color-black">
-						<?php esc_html_e( 'Free', 'sejoli' ); ?>
+						<?php esc_html_e( 'Free', 'sejolitutor' ); ?>
 					</span>
 				</div>
 
@@ -241,13 +241,13 @@
 						<input type="hidden" name="tutor_course_id" value="<?php echo esc_attr( get_the_ID() ); ?>">
 						<input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
 						<button type="submit" class="tutor-btn tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-enroll-course-button tutor-static-loader">
-							<?php esc_html_e( 'Enroll now', 'sejoli' ); ?>
+							<?php esc_html_e( 'Enroll now', 'sejolitutor' ); ?>
 						</button>
 					</form>
 				</div>
 				<br>
 				<div class="tutor-fs-7 tutor-color-muted tutor-mt-20 tutor-text-center">
-					<?php esc_html_e( 'Free access this course', 'sejoli' ); ?>
+					<?php esc_html_e( 'Free access this course', 'sejolitutor' ); ?>
 				</div>
 	    <?php
 	        	endif;

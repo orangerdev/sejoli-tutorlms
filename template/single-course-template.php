@@ -4,15 +4,15 @@
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
 	$plugin_dir  = WP_PLUGIN_DIR . '/tutor/tutor.php';
-	$plugin_data = get_plugin_data($plugin_dir);
+	$plugin_data = get_plugin_data( $plugin_dir );
 	
-	do_action('tutor_course/single/before/wrap'); 
+	do_action( 'tutor_course/single/before/wrap' ); 
 
 	if( $plugin_data['Version'] >= '2.0.0' && $plugin_data['Version'] <= '2.0.5' ) :
 	
 		$course_nav_item = apply_filters( 'tutor_course/single/nav_items', tutor_utils()->course_nav_items(), get_the_ID() );
 	
-	elseif($plugin_data['Version'] >= '2.0.6') :
+	elseif( $plugin_data['Version'] >= '2.0.6' ) :
 		
 		// Prepare the nav items
 		$course_id 						   = get_the_ID();
@@ -218,7 +218,7 @@
 <?php endif; ?>
 
 <?php 
-	do_action('tutor_course/single/after/wrap');
+	do_action( 'tutor_course/single/after/wrap' );
 
 	sejoli_footer();
 ?>

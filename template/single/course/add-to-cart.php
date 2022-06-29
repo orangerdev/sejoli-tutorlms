@@ -1,9 +1,9 @@
 <div class="tutor-course-purchase-box">
 <?php
-$products = sejolitutor_get_products(get_the_ID());
+$products = sejolitutor_get_products( get_the_ID() );
 
-if($products) :
-    $get_product = sejolisa_get_product($products);
+if( $products ) :
+    $get_product = sejolisa_get_product( $products );
 ?>
     <div class="tutor-course-sidebar-card-pricing tutor-d-flex tutor-align-end tutor-justify-between">
         <div class="price">
@@ -14,15 +14,12 @@ if($products) :
         <span class="btn-icon tutor-icon-cart-filled"></span>
         <span><?php echo __('Buy This Course', 'sejolitutor'); ?></span>
     </a>
-<?php 
-else:
-?>
+<?php else: ?>
 <div class="tutor-course-single-pricing">
     <div class="price">
         <?php esc_html_e( 'Free', 'sejolitutor' ); ?>
     </div>
 </div>
-
 <div class="tutor-course-single-btn-group <?php echo is_user_logged_in() ? '' : 'tutor-course-entry-box-login'; ?>" data-login_url="<?php echo $login_url; ?>">
     <form class="tutor-enrol-course-form" method="post">
         <?php wp_nonce_field( tutor()->nonce_action, tutor()->nonce ); ?>
@@ -33,11 +30,8 @@ else:
         </button>
     </form>
 </div>
-<br>
 <div class="tutor-fs-7 tutor-color-muted tutor-mt-20 tutor-text-center">
     <?php esc_html_e( 'Free access this course', 'sejolitutor' ); ?>
 </div>
-<?php
-endif;
-?>
+<?php endif; ?>
 </div>
