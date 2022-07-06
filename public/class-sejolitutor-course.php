@@ -49,7 +49,7 @@ class Course {
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -65,15 +65,22 @@ class Course {
 
         $related_products = sejolitutor_get_products( $course_id );
 
-        if( is_array($related_products) && 0 < count($related_products) ) :
+        if( is_array( $related_products ) && 0 < count( $related_products ) ) :
+
             $this->is_purchasable = true;
+
             return true;
+
         else :
+
             $this->is_purchasable = false;
+
             return false;
+
         endif;
 
         return $is_purchasable;
+
     }
 
     /**
@@ -84,21 +91,21 @@ class Course {
      */
     public function check_course_sell_by( $sell_by ) {
 
-        if($this->is_purchasable) :
+        if( $this->is_purchasable ) :
             return 'sejoli';
         endif;
 
         return $sell_by;
+
     }
 
     public function set_template_path( $template_location, $template ) {
-        // error_log(print_r($template, true));
-        // error_log(print_r($template_location, true));
-        if( 'single\course\add-to-cart-sejoli' === $template ) :
+        
+        if( 'single\course\add-to-cart' === str_replace("/", "\\", $template) ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 
-        if( 'single\course\course-entry-box' === $template ) :
+        if( 'single\course\course-entry-box' === str_replace("/", "\\", $template) ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 

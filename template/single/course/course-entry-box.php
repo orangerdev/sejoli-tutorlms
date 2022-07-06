@@ -1,4 +1,9 @@
 <?php
+	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	
+	$plugin_dir  = WP_PLUGIN_DIR . '/tutor/tutor.php';
+	$plugin_data = get_plugin_data($plugin_dir);
+
 	// Utility data
 	$is_enrolled           = apply_filters( 'tutor_alter_enroll_status', tutor_utils()->is_enrolled() );
 	$lesson_url            = tutor_utils()->get_course_first_lesson();
@@ -10,8 +15,8 @@
 	$is_public             = get_post_meta( get_the_ID(), '_tutor_is_public_course', true ) == 'yes';
 
 	// Monetization info
-	$monetize_by              = tutor_utils()->get_option( 'monetize_by' );
-	$is_purchasable           = tutor_utils()->is_course_purchasable();
+	$monetize_by           = tutor_utils()->get_option( 'monetize_by' );
+	$is_purchasable        = tutor_utils()->is_course_purchasable();
 
 	// Get login url if
 	$is_tutor_login_disabled = ! tutor_utils()->get_option( 'enable_tutor_native_login', null, true, true );
@@ -19,17 +24,17 @@
 	$default_meta = array(
 		array(
 			'icon_class' => 'tutor-icon-mortarboard',
-			'label'      => __( 'Total Enrolled', 'tutor' ),
+			'label'      => __( 'Total Enrolled', 'sejolitutor' ),
 			'value'      => tutor_utils()->get_option( 'enable_course_total_enrolled' ) ? tutor_utils()->count_enrolled_users_by_course() . ' ' . __("Total Enrolled", "tutor") : null,
 		),
 		array(
 			'icon_class' => 'tutor-icon-clock-line',
-			'label'      => __( 'Duration', 'tutor' ),
+			'label'      => __( 'Duration', 'sejolitutor' ),
 			'value'      => get_tutor_option( 'enable_course_duration' ) ? ( get_tutor_course_duration_context() ? get_tutor_course_duration_context() . ' ' . __("Duration", "tutor") : false ) : null,
 		),
 		array(
 			'icon_class' => 'tutor-icon-refresh-o',
-			'label'      => __( 'Last Updated', 'tutor' ),
+			'label'      => __( 'Last Updated', 'sejolitutor' ),
 			'value'      => get_tutor_option( 'enable_course_update_date' ) ? get_the_modified_date( get_option( 'date_format' ) ) . ' ' . __("Last Updated", "tutor") : null,
 		),
 	);
@@ -38,7 +43,7 @@
 	if(tutor_utils()->get_option('enable_course_level', true, true)) {
 		array_unshift($default_meta, array(
 			'icon_class' => 'tutor-icon-level',
-			'label'      => __( 'Level', 'tutor' ),
+			'label'      => __( 'Level', 'sejolitutor' ),
 			'value'      => get_tutor_course_level( get_the_ID() ),
 		));
 	}
@@ -57,7 +62,13 @@
 			// Course Info
 			$completed_percent   = tutor_utils()->get_course_completed_percent();
 			$is_completed_course = tutor_utils()->is_completed_course();
-			$retake_course       = tutor_utils()->can_user_retake_course();
+			
+			if( $plugin_data['Version'] >= '2.0.0' && $plugin_data['Version'] <= '2.0.5' ) :
+				$retake_course   = tutor_utils()->get_option( 'course_retake_feature', false ) && ( $is_completed_course || $completed_percent >= 100 );
+			elseif( $plugin_data['Version'] >= '2.0.6' ) :
+				$retake_course   = tutor_utils()->can_user_retake_course();
+			endif;
+			
 			$course_id           = get_the_ID();
 			$course_progress     = tutor_utils()->get_course_completed_percent( $course_id, 0, true );
 			?>
@@ -65,7 +76,7 @@
 			<?php if ( tutor_utils()->get_option('enable_course_progress_bar', true, true) && is_array( $course_progress ) && count( $course_progress ) ) : ?>
 				<div class="tutor-course-progress-wrapper tutor-mb-32">
 					<h3 class="tutor-color-black tutor-fs-5 tutor-fw-bold tutor-mb-16">
-						<?php esc_html_e( 'Course Progress', 'tutor' ); ?>
+						<?php esc_html_e( 'Course Progress', 'sejolitutor' ); ?>
 					</h3>
 					<div class="list-item-progress">
 						<div class="tutor-fs-6 tutor-color-secondary tutor-d-flex tutor-align-center tutor-justify-between">
@@ -75,7 +86,7 @@
 							</span>
 							<span class="progress-percentage">
 								<?php echo esc_html( $course_progress['completed_percent'] . '%' ); ?>
-								<?php esc_html_e( 'Complete', 'tutor' ); ?>
+								<?php esc_html_e( 'Complete', 'sejolitutor' ); ?>
 							</span>
 						</div>
 						<div class="tutor-progress-bar tutor-mt-12" style="--tutor-progress-value:<?php echo esc_attr( $course_progress['completed_percent'] ); ?>%;">
@@ -83,8 +94,9 @@
 						</div>
 					</div>
 				</div>
-			<?php endif; ?>
-			<?php
+			<?php 
+			endif;
+			
 			$start_content = '';
 
 			// The user is enrolled anyway. No matter manual, free, purchased, woocommerce, edd, membership
@@ -105,11 +117,11 @@
 					<<?php echo $tag; ?> <?php echo $retake_course ? 'disabled="disabled"' : ''; ?> href="<?php echo esc_url( $lesson_url ); ?>" class="<?php echo esc_attr( $button_class . ' ' . $button_identifier ); ?>" data-course_id="<?php echo esc_attr( get_the_ID() ); ?>">
 					<?php
 					if ( $retake_course ) {
-						esc_html_e( 'Retake This Course', 'tutor' );
+						esc_html_e( 'Retake This Course', 'sejolitutor' );
 					} elseif ( $completed_percent <= 0 ) {
-						esc_html_e( 'Start Learning', 'tutor' );
+						esc_html_e( 'Start Learning', 'sejolitutor' );
 					} else {
-						esc_html_e( 'Continue Learning', 'tutor' );
+						esc_html_e( 'Continue Learning', 'sejolitutor' );
 					}
 					?>
 					</<?php echo $tag; ?>>
@@ -129,7 +141,7 @@
 					<input type="hidden" value="tutor_complete_course" name="tutor_action"/>
 
 					<button type="submit" class="tutor-btn tutor-btn-outline-primary tutor-btn-block" name="complete_course_btn" value="complete_course">
-						<?php esc_html_e( 'Complete Course', 'tutor' ); ?>
+						<?php esc_html_e( 'Complete Course', 'sejolitutor' ); ?>
 					</button>
 				</form>
 				<?php
@@ -145,10 +157,14 @@
 					<div class="tutor-fs-7 tutor-color-muted tutor-mt-20 tutor-d-flex">
 						<span class="tutor-fs-5 tutor-color-success tutor-icon-purchase-mark tutor-mr-8"></span>
 						<span class="tutor-enrolled-info-text">
-							<?php esc_html_e( 'You enrolled in this course on', 'tutor' ); ?>
+							<?php esc_html_e( 'You enrolled in this course on', 'sejolitutor' ); ?>
 							<span class="tutor-fs-7 tutor-fw-bold tutor-color-success tutor-ml-4 tutor-enrolled-info-date">
 								<?php
-									echo esc_html( tutor_i18n_get_formated_date( $post_date, get_option( 'date_format' ) ) );
+									if( $plugin_data['Version'] >= '2.0.0' && $plugin_data['Version'] <= '2.0.5' ) :
+										echo date_i18n( get_option( 'date_format' ), strtotime( $post_date ) );
+									elseif( $plugin_data['Version'] >= '2.0.6' ) :
+										echo esc_html( tutor_i18n_get_formated_date( $post_date, get_option( 'date_format' ) ) );
+									endif;
 								?>
 							</span>
 						</span>
@@ -164,7 +180,7 @@
 			ob_start();
 			?>
 				<a href="<?php echo esc_url( $first_lesson_url ); ?>" class="tutor-btn tutor-btn-primary tutor-btn-lg tutor-btn-block">
-					<?php esc_html_e( 'Start Learning', 'tutor' ); ?>
+					<?php esc_html_e( 'Start Learning', 'sejolitutor' ); ?>
 				</a>
 			<?php
 			echo apply_filters( 'tutor/course/single/entry-box/is_public', ob_get_clean(), get_the_ID() );
@@ -179,7 +195,7 @@
 						<div class="tutor-alert-text">
 							<span class="tutor-icon-circle-info tutor-alert-icon tutor-mr-12" area-hidden="true"></span>
 							<span>
-								<?php esc_html_e( 'This course is full right now. We limit the number of students to create an optimized and productive group dynamic.', 'tutor' ); ?>
+								<?php esc_html_e( 'This course is full right now. We limit the number of students to create an optimized and productive group dynamic.', 'sejolitutor' ); ?>
 							</span>
 						</div>
 					</div>
@@ -193,14 +209,12 @@
 			} else {
 				ob_start();
 
-					global $post;
+				$products = sejolitutor_get_products(get_the_ID());
 
-					    $products = sejolitutor_get_products($post->ID);
-				?>
-		            <?php
-				    foreach($products as $product_id) :
-				        $get_product = sejolisa_get_product($product_id);
-				    ?>
+				if($products) :
+
+			        $get_product = sejolisa_get_product($products);
+		?>
 					<div class="tutor-course-sidebar-card-pricing tutor-d-flex tutor-align-end tutor-justify-between">
 			            <div>
 			                <span class="tutor-fs-4 tutor-fw-bold tutor-color-black">
@@ -208,13 +222,36 @@
 			                </span>
 			            </div>
 			        </div>
-		            <a href='<?php echo get_permalink($product_id); ?>' target="new" class="tutor-btn tutor-btn-icon tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-add-to-cart-button">
+		            <a href="<?php echo get_permalink($products); ?>" target="new" class="tutor-btn tutor-btn-icon tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-add-to-cart-button">
 		                <span class="btn-icon tutor-icon-cart-filled"></span>
-		                <span><?php echo __('Buy This Course', 'sejoli'); ?></span>
+		                <span><?php echo __('Buy This Course', 'sejolitutor'); ?></span>
 		            </a>
-		            <?php endforeach; ?>
-				<?php
-			}
+	    <?php 
+	        	else:
+	    ?>
+	    		<div class="tutor-course-single-pricing">
+					<span class="tutor-fs-4 tutor-fw-bold tutor-color-black">
+						<?php esc_html_e( 'Free', 'sejolitutor' ); ?>
+					</span>
+				</div>
+
+				<div class="tutor-course-single-btn-group <?php echo is_user_logged_in() ? '' : 'tutor-course-entry-box-login'; ?>" data-login_url="<?php echo $login_url; ?>">
+					<form class="tutor-enrol-course-form" method="post">
+						<?php wp_nonce_field( tutor()->nonce_action, tutor()->nonce ); ?>
+						<input type="hidden" name="tutor_course_id" value="<?php echo esc_attr( get_the_ID() ); ?>">
+						<input type="hidden" name="tutor_course_action" value="_tutor_course_enroll_now">
+						<button type="submit" class="tutor-btn tutor-btn-primary tutor-btn-lg tutor-btn-block tutor-mt-24 tutor-enroll-course-button tutor-static-loader">
+							<?php esc_html_e( 'Enroll now', 'sejolitutor' ); ?>
+						</button>
+					</form>
+				</div>
+				<br>
+				<div class="tutor-fs-7 tutor-color-muted tutor-mt-20 tutor-text-center">
+					<?php esc_html_e( 'Free access this course', 'sejolitutor' ); ?>
+				</div>
+	    <?php
+	        	endif;
+			}	
 		}
 
 		do_action('tutor_course/single/entry/after', get_the_ID());
