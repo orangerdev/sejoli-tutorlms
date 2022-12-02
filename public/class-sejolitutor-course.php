@@ -100,8 +100,12 @@ class Course {
     }
 
     public function set_template_path( $template_location, $template ) {
-        
+
         if( 'single\course\add-to-cart' === str_replace("/", "\\", $template) ) :
+            return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
+        endif;
+
+        if( 'loop\course-price' === str_replace("/", "\\", $template) ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 

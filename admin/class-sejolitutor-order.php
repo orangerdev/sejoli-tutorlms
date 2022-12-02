@@ -135,7 +135,7 @@ class Order {
 				tutor_utils()->do_enroll($course_id, $order_id, $user_id);
 
 				$enrolled_ids = tutor_utils()->get_course_enrolled_ids_by_order_id($order_data['ID']);
-				$enrolled_id  =  $enrolled_ids[0]['enrolled_id'];
+				$enrolled_id  = $enrolled_ids[0]['enrolled_id'];
 
 				$this->update_enroll_complete(
 					$course_id,
@@ -172,7 +172,7 @@ class Order {
 				tutor_utils()->do_enroll($course_id, $order_id, $user_id);
 
 				$enrolled_ids = tutor_utils()->get_course_enrolled_ids_by_order_id($order_data['ID']);
-				$enrolled_id  =  $enrolled_ids[0]['enrolled_id'];
+				$enrolled_id  = $enrolled_ids[0]['enrolled_id'];
 
 				$this->update_enroll_complete(
 					$course_id,
