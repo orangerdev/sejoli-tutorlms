@@ -71,9 +71,7 @@
 			
 			if( $plugin_data['Version'] >= '2.0.0' && $plugin_data['Version'] <= '2.0.5' ) :
 				$retake_course   = tutor_utils()->get_option( 'course_retake_feature', false ) && ( $is_completed_course || $completed_percent >= 100 );
-			elseif( $plugin_data['Version'] >= '2.0.6' && $plugin_data['Version'] <= '2.0.9' ) :
-				$retake_course   = tutor_utils()->can_user_retake_course();
-			elseif( $plugin_data['Version'] >= '2.1.0' ) :
+			elseif( $plugin_data['Version'] >= '2.0.6' ) :
 				$retake_course   = tutor_utils()->can_user_retake_course();
 			endif;
 			

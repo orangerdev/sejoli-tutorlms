@@ -105,6 +105,10 @@ class Course {
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
 
+        if( 'single\course\lead-info' === str_replace("/", "\\", $template) ) :
+            return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
+        endif;
+
         if( 'loop\course-price' === str_replace("/", "\\", $template) ) :
             return SEJOLITUTOR_DIR . 'template/' . $template . '.php';
         endif;
