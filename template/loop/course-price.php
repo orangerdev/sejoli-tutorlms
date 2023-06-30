@@ -25,15 +25,20 @@
 	 *
 	 * @since v2.1.2
 	 */
-	$button_class = 'pmpro' === $monetization ? ' ' : ' tutor-course-list-enroll';
-	if ( ! is_user_logged_in() ) {
-		$button_class = ' tutor-open-login-modal';
-	}
+	// $button_class = 'pmpro' === $monetization ? ' ' : ' tutor-course-list-enroll';
+	// if ( ! is_user_logged_in() ) {
+	// 	$button_class = ' tutor-open-login-modal';
+	// }
 
 	$products = sejolitutor_get_products(get_the_ID());
 	if($products) :
-		$enroll_btn = '<div class="tutor-course-list-btn">' . apply_filters( 'tutor_course_restrict_new_entry', '<a href="' . get_the_permalink() . '" class="tutor-btn tutor-btn-outline-primary tutor-btn-md tutor-btn-block ' . $button_class . ' " data-course-id="' . $course_id . '">' . __( 'Buy This Course ', 'tutor' ) . '</a>' ) . '</div>';
+		$button_class = '';
+		$enroll_btn = '<div class="tutor-course-list-btn">' . '<a href="' . get_permalink($products) . '" class="tutor-btn tutor-btn-outline-primary tutor-btn-md tutor-btn-block ' . $button_class . ' ">' . __( 'Buy This Course ', 'tutor' ) . '</a>' . '</div>';
 	else:
+		$button_class = 'pmpro' === $monetization ? ' ' : ' tutor-course-list-enroll';
+		if ( ! is_user_logged_in() ) {
+			$button_class = ' tutor-open-login-modal';
+		}
 		$enroll_btn = '<div class="tutor-course-list-btn">' . apply_filters( 'tutor_course_restrict_new_entry', '<a href="' . get_the_permalink() . '" class="tutor-btn tutor-btn-outline-primary tutor-btn-md tutor-btn-block ' . $button_class . ' " data-course-id="' . $course_id . '">' . __( 'Enroll Course', 'tutor' ) . '</a>' ) . '</div>';
 	endif;
 	
