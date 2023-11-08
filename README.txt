@@ -33,6 +33,9 @@ Coming soon
 
 == Changelog ==
 
+= 1.0.3
+* Fix "kelas anda/course enrolled list" data in member area
+
 = 1.0.2
 * Fix enroll link
 * Fix checkout product link

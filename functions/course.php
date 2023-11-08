@@ -99,7 +99,9 @@ function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
         $user_id = get_current_user_id();
     endif;
 
+
     $course_ids = tutor_utils()->get_enrolled_courses_ids_by_user( $user_id );
+    error_log(print_r($course_ids, true));
     $posts = new \WP_Query(array(
         'post_type'              => TLMS_COURSE_CPT,
         'post_author'            => $user_id,
@@ -111,7 +113,7 @@ function sejolitutor_get_all_enrolled_courses_by_user( $user_id = 0 ) {
         'update_post_term_cache' => false
     ));
 
-    if( 0 < count($posts->posts) ) :
+    if( 0 < count($posts->posts) && !empty($course_ids) ) :
         return $posts->posts;
     endif;
 

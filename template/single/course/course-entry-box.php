@@ -10,7 +10,13 @@
 	$is_administrator      = tutor_utils()->has_user_role( 'administrator' );
 	$is_instructor         = tutor_utils()->is_instructor_of_this_course();
 	$course_content_access = (bool) get_tutor_option( 'course_content_access_for_ia' );
-	$is_privileged_user    = $course_content_access && ( $is_administrator || $is_instructor );
+
+	if( $plugin_data['Version'] >= '2.1.0' ) :
+		$is_privileged_user    = tutor_utils()->has_user_course_content_access();
+	else:
+		$is_privileged_user    = $course_content_access && ( $is_administrator || $is_instructor );
+	endif;
+	
 	$tutor_course_sell_by  = apply_filters( 'tutor_course_sell_by', null );
 	$is_public             = get_post_meta( get_the_ID(), '_tutor_is_public_course', true ) == 'yes';
 
@@ -162,7 +168,9 @@
 								<?php
 									if( $plugin_data['Version'] >= '2.0.0' && $plugin_data['Version'] <= '2.0.5' ) :
 										echo date_i18n( get_option( 'date_format' ), strtotime( $post_date ) );
-									elseif( $plugin_data['Version'] >= '2.0.6' ) :
+									elseif( $plugin_data['Version'] >= '2.0.6' && $plugin_data['Version'] <= '2.0.9' ) :
+										echo esc_html( tutor_i18n_get_formated_date( $post_date, get_option( 'date_format' ) ) );
+									elseif( $plugin_data['Version'] >= '2.1.0' ) :
 										echo esc_html( tutor_i18n_get_formated_date( $post_date, get_option( 'date_format' ) ) );
 									endif;
 								?>
