@@ -16,7 +16,7 @@
  * Plugin Name:       Sejoli - Tutor LMS
  * Plugin URI:        https://sejoli.co.id
  * Description:       Integrates SEJOLI premium membership WordPress plugin with Tutor LMS ( an LMS WordPress plugin )
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Ridwan Arifandi
  * Author URI:        https://ridwan-arifandi.com
  * License:           GPL-2.0+
@@ -41,7 +41,7 @@ endif;
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SEJOLITUTOR_VERSION',      '1.0.2' );
+define( 'SEJOLITUTOR_VERSION',      '1.0.3' );
 define( 'SEJOLITUTOR_DIR',	        plugin_dir_path(__FILE__));
 define( 'SEJOLITUTOR_URL',	        plugin_dir_url(__FILE__));
 define( 'TLMS_COURSE_CPT',          'courses');
